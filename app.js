@@ -4,6 +4,12 @@ const bodyParser = require("body-parser");
 require("dotenv").config();
 const mongoose = require("mongoose");
 
+const cors = require('cors');
+
+
+// enable CORS for all routes
+app.use(cors());
+
 // connect to database
 mongoose
   .connect(
@@ -19,6 +25,9 @@ app.use(bodyParser.json());
 
 app.use(express.static("uploads"));
 app.use("/uploads", express.static("uploads"));
+
+app.use(express.static("out"));
+app.use("/doc", express.static("out"));
 
 app.get("/hello", (req, res) => {
   return res.status(200).json({ message: "Hello World!" });

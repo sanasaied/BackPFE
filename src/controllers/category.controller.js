@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const categoryModel = require("../models/category.model");
-const Category = categoryModel.Product;
+const {uploadMultipleImages} = require("../middlewares/upload.multiple.image");
+const Category = categoryModel.Category;
 
 const getAll = async (req, res) => {
     const category = await Category.find().sort({name: 1}).exec();
@@ -24,9 +25,13 @@ const deleteCategory = async (req, res) => {
 const createCategory = async (req, res) => {
     const category = new Category(req.body);
     category._id = new mongoose.Types.ObjectId();
-    category.exists({name: req.body.name}, (error, result) => {
+    Category.exists({name: req.body.name}, (error, result) => {
         if (error) return res.status(500).json(error);
         if (!result) {
+            uploadMultipleImages(req, res).forEach((file) => {
+                console.log(file);
+                category.images.push(file.destination + file.filename);
+            });
             category.save().then(data => {
                 console.log(data);
                 return res.status(201).json(data);

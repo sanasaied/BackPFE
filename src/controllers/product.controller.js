@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const productModel = require("../models/product.model");
+const {uploadMultipleImages} = require("../middlewares/upload.multiple.image");
 const Product = productModel.Product;
 
 const getAll = async (req, res) => {
@@ -28,10 +29,14 @@ const updateProduct = (req, res) => {
 const createProduct = (req, res) => {
     const product = new Product(req.body);
     product._id = new mongoose.Types.ObjectId();
+    uploadMultipleImages(req, res).forEach((file) => {
+        console.log(file);
+        product.images.push(file.destination + file.filename);
+    });
     product.save().then((data) => {
         return res.status(201).json(data);
     }).catch((error) => {
-        return res.status(error.code).json(error);
+        return res.status(500).json(error);
     });
 }
 module.exports = {getAll, getAllApproved, getProduct, deleteProduct, updateProduct, createProduct}

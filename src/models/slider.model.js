@@ -1,9 +1,15 @@
 const mongoose = require("mongoose");
-
+/**
+* Mongoose schema for a slider.
+* @typedef {Object} SliderSchema
+* @property {mongoose.Types.ObjectId} _id - The unique ID for the slider.
+* @property {boolean} isHidden - Whether the slider is hidden or not.
+* @property {Array<string>} images - Array of image URLs for the slider.
+*/
 const slider = {
     _id: mongoose.Schema.Types.ObjectId,
     isHidden: { type: Boolean, default: true },
-    image: {type : String, isRequired: true}
+    images: [{type : String, isRequired: true}]
 };
 
 const sliderSchema = mongoose.Schema(slider);

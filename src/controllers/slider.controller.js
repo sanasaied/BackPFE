@@ -1,6 +1,23 @@
 const mongoose = require("mongoose");
 const sliderModel = require("../models/slider.model");
+const {uploadMultipleImages} = require("../middlewares/upload.multiple.image");
 const Slider = sliderModel.Slider;
+
+const createSlider = async (req, res) => {
+    const slider = new Slider(req.body);
+    slider._id = new mongoose.Types.ObjectId();
+    uploadMultipleImages(req, res).forEach((file) => {
+        console.log(file);
+        slider.images.push(file.destination + file.filename);
+    });
+    slider.save()
+        .then((data) => {
+            return res.status(201).json(data);
+        })
+        .catch((error) => {
+            return res.status(error.code).json(error);
+        });
+};
 
 const getAll = async (req, res) => {
     const slider = await Slider.find().exec();
@@ -17,5 +34,5 @@ const deleteSlider = async (req, res) => {
 };
 
 module.exports = {
-    getAll, getShown, deleteSlider
+    getAll, getShown, deleteSlider, createSlider
 };

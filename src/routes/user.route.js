@@ -12,12 +12,11 @@ router.patch("/update", userController.updateUser);
 
 router.post(
   "/auth/register",
-  validate(checkSchema(user)),
   authController.register
 );
 router.post("/auth/login", authController.login);
 router.patch("/auth/activate", authController.activateAccount);
-router.patch('/auth/verify', authController.verifyCode);
+router.get('/auth/verify', authController.verifyCode);
 router.patch('/auth/reset', authController.resetPassword);
 router.patch('/auth/update', authController.updatePassword);
 
