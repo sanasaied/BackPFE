@@ -9,7 +9,7 @@
     "watch": "webpack --watch", "build": "webpack"
   },
   "keywords": [],
-  "author": "Mohamed Testouri",
+  "author": "sana saied",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
