@@ -2,7 +2,8 @@ const multer = require("multer");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "uploads/");
+    const path = req.originalUrl.split("/")[2];
+    cb(null, "uploads/" + path + "/");
   },
   filename: function (req, file, cb) {
     const lastIndex = file.originalname.lastIndexOf(".");
@@ -19,10 +20,10 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage }); // allow upload max 5 files
 
 const uploadImages = (req, res) => {
-  if (req.files == null) {
+  if (req.file == null) {
     return res.status(500).json({ error: "Please select one image to upload" });
   }
-  return res.status(200).send(req.files);
+  return req.file;
 };
 
 module.exports = { upload, uploadImages };

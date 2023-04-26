@@ -13,7 +13,7 @@ const ads = {
   images: [{ type: String, isRequired: true }],
   kind: {
     type: String,
-    enum: ["Gold", "Sliver", "Bronze"],
+    enum: ["Gold", "Silver", "Bronze"],
   },
 };
 

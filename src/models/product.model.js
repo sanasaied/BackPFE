@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { Category } = require("./category.model");
 /**
 
  Possible sizes of the product.
@@ -7,7 +8,15 @@ const mongoose = require("mongoose");
  @memberof module:models/product
  */
 const sizes = {
-    XXXS: "XXXS", XXS: "XXS", XS: "XS", S: "S", M: "M", L: "L", XL: "XL", XXL: "XXL", XXXL: "XXXL",
+  XXXS: "XXXS",
+  XXS: "XXS",
+  XS: "XS",
+  S: "S",
+  M: "M",
+  L: "L",
+  XL: "XL",
+  XXL: "XXL",
+  XXXL: "XXXL",
 };
 /**
 
@@ -53,40 +62,59 @@ const sizes = {
  */
 
 const product = {
-    _id: mongoose.Schema.Types.ObjectId,
-    sku: {type: String},
-    name: {
-        type: String, isRequired: true,
+  _id: mongoose.Schema.Types.ObjectId,
+  sku: { type: String },
+  name: {
+    type: String,
+    isRequired: true,
+  },
+  price: {
+    type: Number,
+    isRequired: true,
+  },
+  discount: { type: Number, default: 0 },
+  offerEnd: { type: String },
+  rating: { type: Number, default: 0 },
+  promotion: {
+    isRequired: false,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Promotion",
+  },
+  new: { type: Boolean, default: true },
+  feedbacks: [
+    {
+      ref: "Feedback",
+      type: mongoose.Schema.Types.ObjectId,
+      isRequired: false,
     },
-    price: {
-        type: Number, isRequired: true,
-    },
-    discount: {type: Number, default: 0},
-    offerEnd:{type: String,},
-    rating: {type: Number, default:0},
-    promotion: {isRequired: false, type: mongoose.Schema.Types.ObjectId, ref: "Promotion"},
-    new: {type: Boolean, default: true},
-    feedbacks: [{
-        ref: "Feedback", type: mongoose.Schema.Types.ObjectId, isRequired: false,
-    },],
-    saleCount: {type: Number, default: 0},
-    category: {type: mongoose.Schema.Types.ObjectId, ref: "Category"},
-    tag: [{type: String}],
-   // colors: [{_id: mongoose.Schema.Types.ObjectId, color: {type: String}, stock: {type: Number, default: 1}}],
-    sizes: [{
-        _id: mongoose.Schema.Types.ObjectId,
-        size: {type: String, enum: sizes},
-        stock: {type: Number},
-        colors: [{_id: mongoose.Schema.Types.ObjectId,
-            color: {type: String},
-            stock: {type: Number, default: 1}}]
-    }],
-    stocks: {type: Number, default: 1},
-    description: {
-        type: String, isRequired: true, notEmpty: {
-            negated: false, errorMessage: "description field is required",
+  ],
+  saleCount: { type: Number, default: 0 },
+  categories: [{ type: mongoose.Schema.Types.ObjectId, ref: "Category" }],
+  tag: [{ type: String }],
+  // colors: [{_id: mongoose.Schema.Types.ObjectId, color: {type: String}, stock: {type: Number, default: 1}}],
+  sizes: [
+    {
+      _id: mongoose.Schema.Types.ObjectId,
+      size: { type: String, enum: sizes },
+      stock: { type: Number },
+      colors: [
+        {
+          _id: mongoose.Schema.Types.ObjectId,
+          color: { type: String },
+          stock: { type: Number, default: 1 },
         },
-    }, /*quantity: {
+      ],
+    },
+  ],
+  stocks: { type: Number, default: 1 },
+  description: {
+    type: String,
+    isRequired: true,
+    notEmpty: {
+      negated: false,
+      errorMessage: "description field is required",
+    },
+  } /*quantity: {
       type: Number,
       isRequired: true,
       notEmpty: {
@@ -95,23 +123,28 @@ const product = {
       },
       isNumeric: true,
       errorMessage: "please enter a number",
-    },*/
+    },*/,
 
-    images: [{
-        type: String, isRequired: true, notEmpty: {
-            negated: false, errorMessage: "image field is required",
-        },
-    }], // viewsNumber: { type: Number, default: 0 },
-    isHidden: {type: Boolean, default: false},
-    isApproved: {type: Boolean, default: false},
-    isSponsored: {type: Boolean, default: false},
-    updatedAt: {type: Date, default: Date.now},
-    point: {type: Number},
-    business: {type: mongoose.Schema.Types.ObjectId, ref: "Business"},
+  images: [
+    {
+      type: String,
+      isRequired: true,
+      notEmpty: {
+        negated: false,
+        errorMessage: "image field is required",
+      },
+    },
+  ], // viewsNumber: { type: Number, default: 0 },
+  isHidden: { type: Boolean, default: false },
+  isApproved: { type: Boolean, default: false },
+  isSponsored: { type: Boolean, default: false },
+  updatedAt: { type: Date, default: Date.now },
+  point: { type: Number },
+  business: { type: mongoose.Schema.Types.ObjectId, ref: "Business" },
 };
 
 const productSchema = mongoose.Schema(product);
 
 const Product = mongoose.model("Product", productSchema);
 
-module.exports = {Product, product};
+module.exports = { Product, product };

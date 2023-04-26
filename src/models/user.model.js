@@ -2,7 +2,6 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 require("dotenv").config();
 
-
 /**
  * @typedef {Object} User
  * @property {mongoose.Schema.Types.ObjectId} _id - User ID
@@ -29,11 +28,14 @@ const user = {
     isRequired: true,
   },
 
-  phone: { type: Number, isRequired: false, notEmpty: true },
+  phone: { type: String, isRequired: false, notEmpty: true },
   email: {
     type: String,
     isRequired: true,
     unique: true,
+    isEmail: {
+      errorMessage: "invalid email format",
+    },
   },
   password: {
     type: String,
@@ -62,4 +64,4 @@ userSchema.pre("save", async function () {
 
 const User = mongoose.model("User", userSchema);
 
-module.exports = { User, user };
+module.exports = { User, user, userSchema };
