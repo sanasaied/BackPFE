@@ -9,7 +9,7 @@ const getAll = async (req, res) => {
   return res.status(200).json(business);
 };
 const getBusiness = (req, res) => {
-  Business.findById(req.body.id, (error, business) => {
+  Business.findById(req.params.id, (error, business) => {
     if (error) return res.status(error.code).json(error);
     else return res.status(200).json(business);
   });
@@ -45,16 +45,23 @@ const getBusinessBy = async (req, res) => {
 };
 
 const deleteBusiness = (req, res) => {
-  Business.remove({ _id: req.body.id }, (error, result) => {
-    if (error) return res.status(error.code).json(error);
+  Business.deleteOne({ _id: req.params.id }, (error, result) => {
+    if (error) return res.status(404).json(error);
     else return res.status(200).json(result);
   });
 };
 const updateBusiness = (req, res) => {
-  Business.findByIdAndUpdate(req.body.id, req.body, (error, result) => {
-    if (error) return res.status(error.code).json(error);
-    else return res.status(200).json(result);
-  });
+  Business.findByIdAndUpdate(
+    req.params.id,
+    req.body,
+    {
+      returnOriginal: false,
+    },
+    (error, result) => {
+      if (error) return res.status(404).json(error);
+      else return res.status(200).json(result);
+    }
+  );
 };
 const createBusiness = (req, res) => {
   const business = new Business(req.body);
@@ -73,7 +80,6 @@ const createBusiness = (req, res) => {
       business
         .save()
         .then((data) => {
-          console.log(data);
           return res.status(201).json(data);
         })
         .catch((error) => {

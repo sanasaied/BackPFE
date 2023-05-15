@@ -18,11 +18,22 @@ const userValidation = [
     .withMessage("password is required")
     .isLength({ min: 5 })
     .withMessage("wrong password length")
-    .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{5,}$/, "i")
+    .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d\W]{5,}$/)
     .withMessage(
       "Password should contain at least 5 characters with  one uppercase letter, one lowercase letter and one number"
     ),
 ];
+const PasswordValidation = [
+  check("password")
+    .exists()
+    .withMessage("password is required")
+    .isLength({ min: 5 })
+    .withMessage("wrong password length")
+    .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d\W]{5,}$/)
+    .withMessage(
+      "Password should contain at least 5 characters with  one uppercase letter, one lowercase letter and one number"
+    ),
+]
 
 function handleValidationErrors(req, res, next) {
   const errors = validationResult(req);
@@ -33,4 +44,4 @@ function handleValidationErrors(req, res, next) {
   next();
 }
 
-module.exports = { handleValidationErrors, userValidation };
+module.exports = { handleValidationErrors, userValidation, PasswordValidation };

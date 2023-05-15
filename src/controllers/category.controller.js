@@ -7,7 +7,10 @@ const {
 const Category = categoryModel.Category;
 
 const getAll = async (req, res) => {
-  const category = await Category.find().sort({ name: 1 }).exec();
+  const category = await Category.find()
+    .sort({ name: 1 })
+    .populate("subCategories")
+    .exec();
   return res.status(200).json(category);
 };
 const getFeatured = async (req, res) => {
@@ -16,19 +19,26 @@ const getFeatured = async (req, res) => {
 };
 
 const getCategory = async (req, res) => {
-  Category.findById(req.body, (error, category) => {
+  Category.findById(req.params.id, (error, category) => {
     if (error) return res.status(error.code).json(error);
     else return res.status(200).json(category);
   });
 };
 const updateCategory = async (req, res) => {
-  Category.findByIdAndUpdate(req.body.id, req.body, (error, result) => {
-    if (error) return res.status(error.code).json(error);
-    else return res.status(200).json(result);
-  });
+  Category.findByIdAndUpdate(
+    req.params.id,
+    req.body,
+    {
+      returnOriginal: false,
+    },
+    (error, result) => {
+      if (error) return res.status(error.code).json(error);
+      else return res.status(200).json(result);
+    }
+  );
 };
 const deleteCategory = async (req, res) => {
-  Category.remove({ _id: req.body.id }, (error, result) => {
+  Category.deleteOne({ _id: req.params.id }, (error, result) => {
     if (error) return res.status(error.code).json(error);
     else return res.status(200).json(result);
   });

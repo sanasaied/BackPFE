@@ -19,11 +19,6 @@ const storage = multer.diskStorage({
 const uploadMultiple = multer({ storage: storage }).array("images", 5); // allow upload max 5 files
 
 const uploadMultipleImages = (req, res) => {
-  /*if (req.files == null) {
-    return res
-      .status(500)
-      .json({ error: "Please select atleast one image to upload" });
-  }*/
   return req.files;
 };
 

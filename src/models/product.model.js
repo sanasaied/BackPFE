@@ -89,23 +89,21 @@ const product = {
     },
   ],
   saleCount: { type: Number, default: 0 },
-  categories: [{ type: mongoose.Schema.Types.ObjectId, ref: "Category" }],
+  subCategories: [{ type: mongoose.Schema.Types.ObjectId, ref: "subCategory" }],
   tag: [{ type: String }],
   // colors: [{_id: mongoose.Schema.Types.ObjectId, color: {type: String}, stock: {type: Number, default: 1}}],
-  sizes: [
-    {
-      _id: mongoose.Schema.Types.ObjectId,
-      size: { type: String, enum: sizes },
-      stock: { type: Number },
-      colors: [
+  variants: 
+  [{
+      color: { type: String },
+      stock: { type: Number, default: 1 },
+      sizes: [
         {
-          _id: mongoose.Schema.Types.ObjectId,
-          color: { type: String },
-          stock: { type: Number, default: 1 },
+          size: { type: String, enum: sizes },
+          stock: { type: Number },
         },
       ],
-    },
-  ],
+    }]
+,
   stocks: { type: Number, default: 1 },
   description: {
     type: String,

@@ -28,40 +28,21 @@ const category = {
       errorMessage: "name field is required",
     },
   },
-  images: [{
-    type: String,
-    isRequired: true,
-    notEmpty: {
-      negated: false,
-      errorMessage: "image field is required",
-    },
-  }],
-  subCategories: [
+  images: [
     {
-      _id: mongoose.Schema.Types.ObjectId,
-      name: {
-        type: String,
-        isRequired: true,
-        notEmpty: {
-          negated: false,
-          errorMessage: "name field is required",
-        },
+      type: String,
+      isRequired: true,
+      notEmpty: {
+        negated: false,
+        errorMessage: "image field is required",
       },
-      images: [{
-        type: String,
-        isRequired: true,
-        notEmpty: {
-          negated: false,
-          errorMessage: "image field is required",
-        },
-      }],
-      products: [{ type: mongoose.Schema.Types.ObjectId, ref: "Product" }],
     },
   ],
+  subCategories: [{ type: mongoose.Schema.Types.ObjectId, ref: "subCategory" }],
 };
 
 const categorySchema = mongoose.Schema(category);
 
 const Category = mongoose.model("Category", categorySchema);
 
-module.exports = {Category, category};
+module.exports = { Category, category };

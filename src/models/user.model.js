@@ -6,7 +6,7 @@ require("dotenv").config();
  * @typedef {Object} User
  * @property {mongoose.Schema.Types.ObjectId} _id - User ID
  * @property {string} fullName - User's full name
- * @property {number} phone - User's phone number
+ * @property {string} phoneNumber - User's phone number
  * @property {string} email - User's email
  * @property {string} password - User's password
  * @property {string} gender - User's gender
@@ -28,14 +28,11 @@ const user = {
     isRequired: true,
   },
 
-  phone: { type: String, isRequired: false, notEmpty: true },
+  phoneNumber: { type: String, isRequired: false, notEmpty: true },
   email: {
     type: String,
     isRequired: true,
     unique: true,
-    isEmail: {
-      errorMessage: "invalid email format",
-    },
   },
   password: {
     type: String,
@@ -51,9 +48,17 @@ const user = {
   credit: { type: Number, default: 0 },
   point: { type: Number, default: 0 },
   promoCode: { type: String },
+  referralCode: {type: String},
+  referredUsers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }]
 };
 
 userSchema = mongoose.Schema(user);
+userSchema.options.toJSON = {
+  transform: function (doc, ret) {
+    delete ret.password; // Remove password field from JSON representation of object
+  }
+};
+
 
 userSchema.pre("save", async function () {
   if (this.password) {
@@ -64,4 +69,4 @@ userSchema.pre("save", async function () {
 
 const User = mongoose.model("User", userSchema);
 
-module.exports = { User, user, userSchema };
+module.exports = { User, user };

@@ -10,10 +10,9 @@ let transporter = nodemailer.createTransport({
         pass: process.env.MAIL_PASSWORD
     },
 });
-const sendmail = (mailOptions) => {
+module.exports =  function sendmail (mailOptions){
     transporter.sendMail(mailOptions, function (error, info) {
         if (error) console.log("[ERROR WHILE SENDING MAIL !]", error); else console.log("[MAIL SUCCESSFULLY SENT !]", info.response);
     });
 }
 
-module.exports = {sendmail};

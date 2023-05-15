@@ -33,7 +33,7 @@ const deleteAd = async (req, res) => {
 const createAd = (req, res) => {
   const ad = new Ads(req.body);
   ad._id = new mongoose.Types.ObjectId();
-  var dir = "uploads/ads/";
+  var dir = "uploads/promotions/";
 
   if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir);
