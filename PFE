@@ -1,7 +1,7 @@
 version: '3'
 services:
-  api:
-    container_name: tinar_backend
+  app:
+    
     build: 
       context: ./
       dockerfile: dockerfile
@@ -15,19 +15,13 @@ services:
     environment:
       cors__domains: "http://localhost:3000"
   database:
-    image: mongo
-    container_name: mongoDatabase
+    image: mongo 
     restart: on-failure
     ports:
       - "4000:4000"
     volumes:
       - database_volume:/var/lib/mongodb/data
-  front: 
-    image: frontnew
-    container_name: frontend
-    restart: on-failure
-    ports:
-      - "3001:3001"
+  
 volumes:
   database_volume:
 
